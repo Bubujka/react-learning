@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src='bower_components/react/react.js'></script>
+<script src='bower_components/react/JSXTransformer.js'></script>
+</head>
+<body>
+<script type="text/jsx">
+ var App = React.createClass({
+  getInitialState: function(){
+    return {
+      red: 0,
+      green: 0,
+      blue: 0,
+    }
+  },
+  update: function(e){
+    console.log(this.refs.red);
+    this.setState({
+      red: this.refs.red.refs.inp.getDOMNode().value,
+      green: this.refs.green.refs.inp.getDOMNode().value,
+      blue: this.refs.blue.refs.inp.getDOMNode().value,
+    })
+  },
+  getDefaultProps: function(){
+    return { }
+  },
+  propTypes: {
+    txt: React.PropTypes.string,
+    cat: React.PropTypes.number.isRequired
+  },
+  render: function(){
+    return <div>
+      <b>red: {this.state.red}</b><br />
+      <b>green: {this.state.green}</b><br />
+      <b>blue: {this.state.blue}</b><br />
+      <hr />
+      <Slider ref='red' update={this.update} />
+      <Slider ref='green' update={this.update} />
+      <Slider ref='blue' update={this.update} />
+      {this.state.txt}
+
+    </div>;
+  }
+ });
+ var Slider = React.createClass({
+  getInitialState: function(){
+    return {
+      red: 0,
+      green: 0,
+      blue: 0,
+    }
+  },
+  render: function(){
+    return <div>
+      <input ref='inp' type='range' min='0' max='255' onChange={this.props.update} />
+    </div>
+  }
+ });
+ var Widget = React.createClass({
+  render: function(){
+    return <div>
+      Input: <input type='text' onChange={this.props.update} />
+      <h1>Output: {this.props.txt}</h1>
+    </div>;
+  }
+ });
+ React.render(<App cat={15} />, document.body);
+</script>
+</body>
+</html>
