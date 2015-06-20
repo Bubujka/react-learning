@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src='bower_components/react/react.js'></script>
+  <script src='bower_components/react/JSXTransformer.js'></script>
+</head>
+<body>
+  <script type="text/jsx">
+  var App = React.createClass({
+    mount: function(){
+      React.render(<Button>Hello!</Button>, document.getElementById('app'))
+    },
+    unmount: function(){
+      React.unmountComponentAtNode(document.getElementById('app'))
+    },
+    render: function () {
+      return (
+        <div>
+          <button onClick={this.mount}>mount</button>
+          <button onClick={this.unmount}>unmount</button>
+          <div id='app'></div>
+        </div>
+      );
+      //<Button>I <Heart /> React</Button>
+    }
+  });
+  var Button = React.createClass({
+    getInitialState: function(){
+      return {val:0}
+    },
+    update: function(){
+      this.setState({val: this.state.val+1})
+    },
+    componentWillMount: function(){
+      this.setState({m:2});
+      console.log('mounting');
+    },
+    componentDidMount: function(){
+      //console.log(this.getDOMNode());
+      //this.inc = setInterval(this.update, 500)
+    },
+    componentWillUnmount: function(){
+      //clearInterval(this.inc);
+      //console.log('bye');
+    },
+    render: function () {
+      console.log('rendering');
+      return <button onClick={this.update}>{this.props.children} x {this.state.val * this.state.m}</button>
+    }
+  });
+  var Heart = React.createClass({
+    render: function(){
+      return <span>&lt;3</span>;
+    }
+  });
+
+  var Button2 = React.createClass({
+    getInitialState: function () {
+      return {
+        increasing: false
+      };
+    },
+    componentWillReceiveProps: function(nextProps){
+      this.setState({ increasing: nextProps.val > this.props.val});
+    },
+    shouldComponentUpdate: function(nextProps, nextState){
+      return nextProps.val % 5 === 0;
+    },
+    componentDidUpdate: function(prevProps, prevState){
+      console.log('prevProps', prevProps);
+      console.log('prevState', prevState);
+    },
+    update:function() {
+      this.setProps({val: this.props.val+1});
+    },
+    render: function() {
+      console.log(this.state.increasing);
+      return <button onClick={this.update}>{this.props.val}</button>;
+    }
+  })
+  React.render(<Button2 val={100500} />, document.body);
+  </script>
+</body>
+</html>
